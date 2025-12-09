@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Carrito</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h1>Mi Carrito</h1>
+            <a href="index.html" style="color:white;">Seguir comprando</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div id="lista-carrito" class="detail-view">
+            </div>
+
+        <div style="text-align: right; margin-top: 20px;">
+            <h2 id="total-carrito">Total: $0.00</h2>
+            <button onclick="window.location.href='pago.html'" id="btn-pagar">Proceder al Pago</button>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script>
+        const contenedor = document.getElementById('lista-carrito');
+        const itemsCarrito = Carrito.obtener();
+        
+        if (itemsCarrito.length === 0) {
+            contenedor.innerHTML = "<p>El carrito está vacío.</p>";
+            document.getElementById('btn-pagar').style.display = 'none';
+        } else {
+            let html = '<table style="width:100%; text-align:left; border-collapse: collapse;">';
+            html += '<tr><th>Producto</th><th>Cant.</th><th>Subtotal</th></tr>';
+            
+            itemsCarrito.forEach(item => {
+                const prod = PRODUCTOS.find(p => p.id === item.id);
+                const subtotal = prod.precio * item.cantidad;
+                html += `
+                    <tr style="border-bottom:1px solid #eee;">
+                        <td style="padding:10px;">${prod.nombre}</td>
+                        <td>x${item.cantidad}</td>
+                        <td>${formatMoney(subtotal)}</td>
+                    </tr>
+                `;
+            });
+            html += '</table>';
+            contenedor.innerHTML = html;
+            
+            document.getElementById('total-carrito').innerText = `Total: ${formatMoney(Carrito.calcularTotal())}`;
+        }
+    </script>
+</body>
+</html>
