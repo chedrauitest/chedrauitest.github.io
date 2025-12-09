@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Finalizar Compra</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <h1>Pasarela de Pago</h1>
+    </header>
+
+    <div class="container">
+        <div class="checkout-view">
+            <h2>Resumen de Compra</h2>
+            <div id="resumen-item" style="background: #f9f9f9; padding: 15px; border-radius: 5px;">
+                </div>
+
+            <h3>Datos de Pago</h3>
+            <form id="form-pago">
+                <label>Nombre en la tarjeta</label>
+                <input type="text" placeholder="Juan Pérez" required>
+                
+                <label>Número de Tarjeta (Simulado)</label>
+                <input type="text" placeholder="0000 0000 0000 0000" maxlength="16" required>
+                
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" placeholder="MM/AA" style="width: 50%;" required>
+                    <input type="text" placeholder="CVV" style="width: 50%;" required>
+                </div>
+
+                <button type="submit" style="width: 100%; margin-top: 20px;">Pagar Ahora</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script>
+       // Busca el bloque <script> y reemplázalo con esto:
+
+        const resumenDiv = document.getElementById('resumen-item');
+        const total = Carrito.calcularTotal();
+        const items = Carrito.obtener();
+
+        // 1. Validar si hay cosas en el carrito
+        if (items.length > 0) {
+            let resumenHTML = `<p><strong>Cantidad de artículos:</strong> ${items.length}</p>`;
+            resumenHTML += `<h2 style="color: #2c3e50;">Total a cobrar: ${formatMoney(total)}</h2>`;
+            resumenDiv.innerHTML = resumenHTML;
+        } else {
+            alert("No hay productos en el carrito");
+            window.location.href = 'index.html';
+        }
+
+        // 2. Simular Pago (igual que antes pero redirige sin ID)
+        document.getElementById('form-pago').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            const btn = this.querySelector('button');
+            btn.textContent = "Procesando...";
+            btn.disabled = true;
+
+            setTimeout(() => {
+                window.location.href = 'exito.html'; // Ya no necesitamos pasar ID por URL
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
