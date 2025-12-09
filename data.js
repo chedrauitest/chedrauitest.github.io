@@ -1,9 +1,9 @@
 // data.js
 
 const PRODUCTOS = [
-    { id: 1, nombre: "Auriculares Pro", precio: 50, desc: "Sonido de alta fidelidad.", imagen: "https://via.placeholder.com/150?text=Audio" },
-    { id: 2, nombre: "Reloj Inteligente", precio: 120, desc: "Monitorea tu salud.", imagen: "https://via.placeholder.com/150?text=Watch" },
-    { id: 3, nombre: "Teclado Mecánico", precio: 85, desc: "Switches azules.", imagen: "https://via.placeholder.com/150?text=Keyboard" }
+    { id: 1, nombre: "Auriculares Pro", precio: 50, desc: "Sonido de alta fidelidad.", imagen: "https://m.media-amazon.com/images/I/41KJmvuQu4L._AC_UF894,1000_QL80_.jpg" },
+    { id: 2, nombre: "Reloj Inteligente", precio: 120, desc: "Monitorea tu salud.", imagen: "https://m.media-amazon.com/images/I/61SF3V3OMiL.jpg" },
+    { id: 3, nombre: "Teclado Mecánico", precio: 85, desc: "Switches azules.", imagen: "https://m.media-amazon.com/images/I/61C16URsWnL._AC_UF894,1000_QL80_.jpg" }
 ];
 
 function formatMoney(amount) {
