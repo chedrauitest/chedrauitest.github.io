@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mi Tienda - Inicio</title>
+    <title>Detalle del Producto</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -19,29 +19,40 @@
     </header>
 
     <div class="container">
-        <div id="grid-productos" class="product-grid">
-            </div>
+        <button onclick="window.history.back()" style="background:#7f8c8d; margin-bottom:20px;">&larr; Volver</button>
+        
+        <div id="detalle-container" class="detail-view">
+            <p>Cargando...</p>
+        </div>
     </div>
 
     <script src="data.js"></script>
     <script>
-        const contenedor = document.getElementById('grid-productos');
+        // 1. Obtener el ID de la URL
+        const idProducto = getParam('id');
+        const contenedor = document.getElementById('detalle-container');
 
-        // Recorremos los productos y creamos el HTML
-        PRODUCTOS.forEach(producto => {
-            const card = document.createElement('div');
-            card.classList.add('card');
-            card.innerHTML = `
-                <img src="${producto.imagen}" alt="${producto.nombre}">
-                <h3>${producto.nombre}</h3>
-                <p>${formatMoney(producto.precio)}</p>
-                <button onclick="verDetalle(${producto.id})">Ver Detalles</button>
+        // 2. Buscar el producto en nuestra "base de datos"
+        const producto = PRODUCTOS.find(p => p.id == idProducto);
+
+        if (producto) {
+            // 3. Renderizar
+            contenedor.innerHTML = `
+                <img src="${producto.imagen}" class="detail-img">
+                <h2>${producto.nombre}</h2>
+                <p>${producto.desc}</p>
+                <h3 style="color: #27ae60;">${formatMoney(producto.precio)}</h3>
+                <hr>
+                <button onclick="Carrito.agregar(${producto.id})">Agregar al Carrito</button>
+                <br><br>
+                <a href="carrito.html" style="color: #2c3e50; text-decoration: underline;">Ir a ver mi Carrito</a>
             `;
-            contenedor.appendChild(card);
-        });
+        } else {
+            contenedor.innerHTML = "<h2>Producto no encontrado :(</h2>";
+        }
 
-        function verDetalle(id) {
-            window.location.href = `detalle.html?id=${id}`;
+        function irAPagar(id) {
+            window.location.href = `pago.html?id=${id}`;
         }
     </script>
 </body>
