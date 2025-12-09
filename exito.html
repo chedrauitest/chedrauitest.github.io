@@ -2,68 +2,56 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Finalizar Compra</title>
+    <title>¡Pago Exitoso!</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
     <header>
-        <h1>Pasarela de Pago</h1>
+        <h1>Confirmación de Pedido</h1>
     </header>
 
     <div class="container">
-        <div class="checkout-view">
-            <h2>Resumen de Compra</h2>
-            <div id="resumen-item" style="background: #f9f9f9; padding: 15px; border-radius: 5px;">
-                </div>
+        <div class="success-view">
+            <div class="check-icon">✓</div>
+            
+            <h2 style="color: #27ae60;">¡Tu pago ha sido acreditado!</h2>
+            <p>Gracias por tu compra. Hemos enviado el recibo a tu correo.</p>
+            
+            <div class="receipt-box" id="recibo-info">
+                <p>Generando recibo...</p>
+            </div>
 
-            <h3>Datos de Pago</h3>
-            <form id="form-pago">
-                <label>Nombre en la tarjeta</label>
-                <input type="text" placeholder="Juan Pérez" required>
-                
-                <label>Número de Tarjeta (Simulado)</label>
-                <input type="text" placeholder="0000 0000 0000 0000" maxlength="16" required>
-                
-                <div style="display: flex; gap: 10px;">
-                    <input type="text" placeholder="MM/AA" style="width: 50%;" required>
-                    <input type="text" placeholder="CVV" style="width: 50%;" required>
-                </div>
-
-                <button type="submit" style="width: 100%; margin-top: 20px;">Pagar Ahora</button>
-            </form>
+            <button onclick="window.location.href='index.html'">Volver a la Tienda</button>
         </div>
     </div>
 
     <script src="data.js"></script>
     <script>
-       // Busca el bloque <script> y reemplázalo con esto:
+        // Busca el bloque <script> y reemplázalo con esto:
 
-        const resumenDiv = document.getElementById('resumen-item');
-        const total = Carrito.calcularTotal();
-        const items = Carrito.obtener();
+const reciboDiv = document.getElementById('recibo-info');
+const totalPagado = Carrito.calcularTotal(); // Guardamos el total antes de borrar
+const numeroOrden = 'ORD-' + Math.floor(Math.random() * 1000000);
 
-        // 1. Validar si hay cosas en el carrito
-        if (items.length > 0) {
-            let resumenHTML = `<p><strong>Cantidad de artículos:</strong> ${items.length}</p>`;
-            resumenHTML += `<h2 style="color: #2c3e50;">Total a cobrar: ${formatMoney(total)}</h2>`;
-            resumenDiv.innerHTML = resumenHTML;
-        } else {
-            alert("No hay productos en el carrito");
-            window.location.href = 'index.html';
-        }
+// Renderizamos el recibo
+reciboDiv.innerHTML = `
+    <p><strong>Número de Orden:</strong> ${numeroOrden}</p>
+    <p><strong>Total Pagado:</strong> ${formatMoney(totalPagado)}</p>
+    <p><strong>Estado:</strong> <span style="color:green; font-weight:bold;">Aprobado</span></p>
+`;
 
-        // 2. Simular Pago (igual que antes pero redirige sin ID)
-        document.getElementById('form-pago').addEventListener('submit', function(e) {
-            e.preventDefault(); 
-            const btn = this.querySelector('button');
-            btn.textContent = "Procesando...";
-            btn.disabled = true;
-
-            setTimeout(() => {
-                window.location.href = 'exito.html'; // Ya no necesitamos pasar ID por URL
-            }, 2000);
-        });
+// IMPORTANTE: Limpiamos el carrito porque ya se compró
+Carrito.vaciar();
     </script>
+    
+
+
+ <!-- Start of async Intercept tracking code -->
+    <script type="text/javascript" src="https://intercept-widget.questionpro.eu/static/js/loader.js"></script>
+    <script type="text/javascript"> 
+       var Intercept = { apiKey: '9019d3a4-1104-4f00-b42e-49f9176f0c18'};
+    </script>
+    <!-- End of async Intercept tracking code -->   
 </body>
 </html>
