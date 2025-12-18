@@ -29,23 +29,28 @@
 
     <script src="data.js"></script>
     <script>
-        const idProducto = getParam('id');
+        // Obtener parámetros y renderizar producto
+        const params = new URLSearchParams(window.location.search);
+        const idProducto = params.get('id');
         const contenedor = document.getElementById('detalle-container');
-        const producto = PRODUCTOS.find(p => p.id == idProducto);
 
-        if (producto) {
-            contenedor.innerHTML = `
-                <img src="${producto.imagen}" class="detail-img">
-                <h2>${producto.nombre}</h2>
-                <p>${producto.desc}</p>
-                <h3 style="color: #27ae60;">${formatMoney(producto.precio)}</h3>
-                <hr>
-                <button onclick="Carrito.agregar(${producto.id})">Agregar al Carrito</button>
-                <br><br>
-                <a href="carrito.html" style="color: #2c3e50; text-decoration: underline;">Ir a ver mi Carrito</a>
-            `;
-        } else {
-            contenedor.innerHTML = "<h2>Producto no encontrado :(</h2>";
+        // Simulación de búsqueda (asegúrate que PRODUCTOS esté en data.js)
+        if (typeof PRODUCTOS !== 'undefined') {
+            const producto = PRODUCTOS.find(p => p.id == idProducto);
+            if (producto) {
+                contenedor.innerHTML = `
+                    <img src="${producto.imagen}" class="detail-img">
+                    <h2>${producto.nombre}</h2>
+                    <p>${producto.desc}</p>
+                    <h3 style="color: #27ae60;">${producto.precio}</h3>
+                    <hr>
+                    <button onclick="Carrito.agregar(${producto.id})">Agregar al Carrito</button>
+                    <br><br>
+                    <a href="carrito.html" style="color: #2c3e50; text-decoration: underline;">Ir a ver mi Carrito</a>
+                `;
+            } else {
+                contenedor.innerHTML = "<h2>Producto no encontrado :(</h2>";
+            }
         }
 
         function irAPagar(id) {
@@ -53,25 +58,35 @@
         }
     </script>
 
-    <script type="text/javascript" src="https://intercept-widget.questionpro.eu/static/js/loader.js"></script>
-
     <script type="text/javascript">
         (function() {
-            // Verificamos que no se haya inicializado ya para evitar el disparo en clics
-            if (!window.interceptIniciado) {
-                
-                // Definimos la configuración básica
+            // Revisamos si ya se activó en esta pestaña para bloquear repeticiones por clic
+            const interceptActivo = sessionStorage.getItem('qp_intercept_bloqueado');
+
+            if (!interceptActivo) {
+                console.log("Cargando QuestionPro por primera vez...");
+
+                // Definimos la API Key
                 window.Intercept = { 
                     apiKey: '9019d3a4-1104-4f00-b42e-49f9176f0c18' 
                 };
 
-                // Marcamos como inicializado
-                window.interceptIniciado = true;
+                // Creamos el script del loader manualmente
+                const scriptQP = document.createElement('script');
+                scriptQP.type = 'text/javascript';
+                scriptQP.async = true;
+                scriptQP.src = "https://intercept-widget.questionpro.eu/static/js/loader.js";
                 
-                console.log("QuestionPro Intercept configurado solo para carga inicial.");
+                // Lo insertamos en el documento
+                document.head.appendChild(scriptQP);
+
+                // Bloqueamos futuras cargas en esta misma sesión
+                sessionStorage.setItem('qp_intercept_bloqueado', 'true');
+            } else {
+                console.log("Intercept bloqueado para evitar que salte al hacer clic.");
             }
         })();
     </script>
-</body>
 
+</body>
 </html>
